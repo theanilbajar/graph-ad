@@ -1,0 +1,83 @@
+DS: COX2_cosine
+Total graphs: 467
+81 94
+semi-supervised abnormal detection: auroc_ab: 0.5192433137638617
+semi-supervised abnormal detection: auroc_ab: 0.4448793215916504
+semi-supervised abnormal detection: auroc_ab: 0.426614481409002
+semi-supervised abnormal detection: auroc_ab: 0.4246575342465753
+semi-supervised abnormal detection: auroc_ab: 0.42335290280495763
+semi-supervised abnormal detection: auroc_ab: 0.42335290280495763
+semi-supervised abnormal detection: auroc_ab: 0.42335290280495763
+semi-supervised abnormal detection: auroc_ab: 0.42335290280495763
+semi-supervised abnormal detection: auroc_ab: 0.42335290280495763
+semi-supervised abnormal detection: auroc_ab: 0.42335290280495763
+semi-supervised abnormal detection: auroc_ab: 0.42335290280495763
+semi-supervised abnormal detection: auroc_ab: 0.4240052185257665
+semi-supervised abnormal detection: auroc_ab: 0.42335290280495763
+semi-supervised abnormal detection: auroc_ab: 0.42335290280495763
+semi-supervised abnormal detection: auroc_ab: 0.42335290280495763
+81 94
+semi-supervised abnormal detection: auroc_ab: 0.421395955642531
+semi-supervised abnormal detection: auroc_ab: 0.3529028049575995
+semi-supervised abnormal detection: auroc_ab: 0.34637964774951074
+semi-supervised abnormal detection: auroc_ab: 0.34833659491193736
+semi-supervised abnormal detection: auroc_ab: 0.35290280495759946
+semi-supervised abnormal detection: auroc_ab: 0.3542074363992172
+semi-supervised abnormal detection: auroc_ab: 0.3542074363992172
+semi-supervised abnormal detection: auroc_ab: 0.3542074363992172
+semi-supervised abnormal detection: auroc_ab: 0.3542074363992172
+semi-supervised abnormal detection: auroc_ab: 0.3542074363992172
+semi-supervised abnormal detection: auroc_ab: 0.3542074363992172
+semi-supervised abnormal detection: auroc_ab: 0.3542074363992172
+semi-supervised abnormal detection: auroc_ab: 0.3542074363992172
+semi-supervised abnormal detection: auroc_ab: 0.3542074363992172
+semi-supervised abnormal detection: auroc_ab: 0.3542074363992172
+82 93
+semi-supervised abnormal detection: auroc_ab: 0.5390410958904109
+semi-supervised abnormal detection: auroc_ab: 0.5458904109589041
+semi-supervised abnormal detection: auroc_ab: 0.5582191780821918
+semi-supervised abnormal detection: auroc_ab: 0.5595890410958904
+semi-supervised abnormal detection: auroc_ab: 0.5595890410958904
+semi-supervised abnormal detection: auroc_ab: 0.5595890410958904
+semi-supervised abnormal detection: auroc_ab: 0.5595890410958904
+semi-supervised abnormal detection: auroc_ab: 0.5595890410958904
+semi-supervised abnormal detection: auroc_ab: 0.5595890410958904
+semi-supervised abnormal detection: auroc_ab: 0.5595890410958904
+semi-supervised abnormal detection: auroc_ab: 0.5595890410958904
+semi-supervised abnormal detection: auroc_ab: 0.5595890410958904
+semi-supervised abnormal detection: auroc_ab: 0.5595890410958904
+semi-supervised abnormal detection: auroc_ab: 0.5595890410958904
+semi-supervised abnormal detection: auroc_ab: 0.5595890410958904
+82 93
+semi-supervised abnormal detection: auroc_ab: 0.4321917808219178
+semi-supervised abnormal detection: auroc_ab: 0.4191780821917808
+semi-supervised abnormal detection: auroc_ab: 0.41164383561643836
+semi-supervised abnormal detection: auroc_ab: 0.4089041095890411
+semi-supervised abnormal detection: auroc_ab: 0.40821917808219177
+semi-supervised abnormal detection: auroc_ab: 0.4089041095890411
+semi-supervised abnormal detection: auroc_ab: 0.40958904109589034
+semi-supervised abnormal detection: auroc_ab: 0.40958904109589034
+semi-supervised abnormal detection: auroc_ab: 0.40958904109589034
+semi-supervised abnormal detection: auroc_ab: 0.40958904109589034
+semi-supervised abnormal detection: auroc_ab: 0.40958904109589034
+semi-supervised abnormal detection: auroc_ab: 0.40890410958904105
+semi-supervised abnormal detection: auroc_ab: 0.40890410958904105
+semi-supervised abnormal detection: auroc_ab: 0.40890410958904105
+semi-supervised abnormal detection: auroc_ab: 0.40890410958904105
+82 93
+semi-supervised abnormal detection: auroc_ab: 0.44041095890410953
+semi-supervised abnormal detection: auroc_ab: 0.45616438356164385
+semi-supervised abnormal detection: auroc_ab: 0.4595890410958904
+semi-supervised abnormal detection: auroc_ab: 0.46095890410958895
+semi-supervised abnormal detection: auroc_ab: 0.46232876712328763
+semi-supervised abnormal detection: auroc_ab: 0.4630136986301369
+semi-supervised abnormal detection: auroc_ab: 0.46369863013698626
+semi-supervised abnormal detection: auroc_ab: 0.4650684931506849
+semi-supervised abnormal detection: auroc_ab: 0.4650684931506849
+semi-supervised abnormal detection: auroc_ab: 0.4650684931506849
+semi-supervised abnormal detection: auroc_ab: 0.4650684931506849
+semi-supervised abnormal detection: auroc_ab: 0.4650684931506849
+semi-supervised abnormal detection: auroc_ab: 0.4664383561643835
+semi-supervised abnormal detection: auroc_ab: 0.4664383561643835
+semi-supervised abnormal detection: auroc_ab: 0.4664383561643835
+auroc[0.4233529  0.35420744 0.55958904 0.40890411 0.46643836], average: 0.44249836921069796, std: 0.06866405230979374

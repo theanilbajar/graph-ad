@@ -1,0 +1,83 @@
+DS: AIDS_cosine
+Total graphs: 2000
+1280 400
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+1280 400
+semi-supervised abnormal detection: auroc_ab: 0.016015625
+semi-supervised abnormal detection: auroc_ab: 0.01609375
+semi-supervised abnormal detection: auroc_ab: 0.0159375
+semi-supervised abnormal detection: auroc_ab: 0.0159375
+semi-supervised abnormal detection: auroc_ab: 0.015859375000000002
+semi-supervised abnormal detection: auroc_ab: 0.015859375000000002
+semi-supervised abnormal detection: auroc_ab: 0.01587890625
+semi-supervised abnormal detection: auroc_ab: 0.015859375000000002
+semi-supervised abnormal detection: auroc_ab: 0.0158984375
+semi-supervised abnormal detection: auroc_ab: 0.0158984375
+semi-supervised abnormal detection: auroc_ab: 0.0158984375
+semi-supervised abnormal detection: auroc_ab: 0.0158984375
+semi-supervised abnormal detection: auroc_ab: 0.0158984375
+semi-supervised abnormal detection: auroc_ab: 0.0158984375
+semi-supervised abnormal detection: auroc_ab: 0.0158984375
+1280 400
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+1280 400
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+1280 400
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+semi-supervised abnormal detection: auroc_ab: 0.0
+auroc[0.         0.01589844 0.         0.         0.        ], average: 0.0031796875000000002, std: 0.006359375000000001
