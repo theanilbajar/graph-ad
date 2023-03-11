@@ -56,6 +56,11 @@ def setup_seed(seed):
      random.seed(seed)
      torch.backends.cudnn.deterministic = True
 
+# train
+    # optimizer
+    # scheduler
+    # model train, loss calculation, model testing, model auc-roc
+
 def train(dataset, data_test_loader, model_teacher, model_student, args):    
     optimizer = torch.optim.Adam(filter(lambda p : p.requires_grad, model_student.parameters()), lr=0.0001)
     scheduler=torch.optim.lr_scheduler.StepLR(optimizer,step_size=50, gamma=0.5)
@@ -101,7 +106,7 @@ def train(dataset, data_test_loader, model_teacher, model_student, args):
             for batch_idx, data in enumerate(data_test_loader):
                adj = Variable(data['adj'].float(), requires_grad=False).to(device)
                h0 = Variable(data['feats'].float(), requires_grad=False).to(device)
-                        
+
                embed_node, embed = model_student(h0, adj)
                embed_teacher_node, embed_teacher = model_teacher(h0, adj)
             #    loss_node = torch.mean(sce_loss(embed_node, embed_teacher_node), dim=-1).mean(dim=-1)
@@ -132,87 +137,87 @@ def train(dataset, data_test_loader, model_teacher, model_student, args):
     
 if __name__ == '__main__':
 
-    mlflow.set_experiment("glocalkd")
-    experiment = mlflow.get_experiment_by_name("glocalkd")
+    # mlflow.set_experiment("GraphAD")
+    # experiment = mlflow.get_experiment_by_name("GraphAD")
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     
     args = arg_parse()
     DS = f'{args.DS}'
 
-    with mlflow.start_run(run_name=DS, experiment_id=experiment.experiment_id):
+    # with mlflow.start_run(run_name=DS, experiment_id=experiment.experiment_id):
         
-        print(f'DS: {DS}')
-        setup_seed(args.seed)
+    print(f'DS: {DS}')
+    setup_seed(args.seed)
 
-        graphs = load_data.read_graphfile(args.datadir, args.DS, max_nodes=args.max_nodes)  
-        datanum = len(graphs)
-        if args.max_nodes == 0:
-            max_nodes_num = max([G.number_of_nodes() for G in graphs])
-        else:
-            max_nodes_num = args.max_nodes
-        print(f'Total graphs: {datanum}')
-        graphs_label = [graph.graph['label'] for graph in graphs]
-        
-        kfd=StratifiedKFold(n_splits=5, random_state=args.seed, shuffle = True)
-        result_auc=[]
-        for k, (train_index,test_index) in enumerate(kfd.split(graphs, graphs_label)):
-            graphs_train_ = [graphs[i] for i in train_index]
-            graphs_test = [graphs[i] for i in test_index]
-        
-            graphs_train = []
-            for graph in graphs_train_:
-                if graph.graph['label'] != 0:
-                    graphs_train.append(graph)
-            
-
-            num_train = len(graphs_train)
-            num_test = len(graphs_test)
-            print(num_train, num_test)
-            
-            # TODO What if there are no node features?
-            dataset_sampler_train = GraphSampler(graphs_train, features=args.feature, normalize=False, max_num_nodes=max_nodes_num)
-        
-            model_teacher = GCN_embedding.GcnEncoderGraph_teacher(dataset_sampler_train.feat_dim, args.hidden_dim, args.output_dim, 2,
-                    args.num_gc_layers, bn=args.bn, args=args).to(device)
-            for param in model_teacher.parameters():
-                param.requires_grad = False
+    graphs = load_data.read_graphfile(args.datadir, args.DS, max_nodes=args.max_nodes)  
+    datanum = len(graphs)
+    if args.max_nodes == 0:
+        max_nodes_num = max([G.number_of_nodes() for G in graphs])
+    else:
+        max_nodes_num = args.max_nodes
+    print(f'Total graphs: {datanum}')
+    graphs_label = [graph.graph['label'] for graph in graphs]
     
-            model_student = GCN_embedding.GcnEncoderGraph_student(dataset_sampler_train.feat_dim, args.hidden_dim, args.output_dim, 2,
-                    args.num_gc_layers, bn=args.bn, args=args).to(device)
-            
-            data_train_loader = torch.utils.data.DataLoader(dataset_sampler_train, 
-                                                        shuffle=True,
-                                                        batch_size=args.batch_size)
+    kfd=StratifiedKFold(n_splits=5, random_state=args.seed, shuffle = True)
+    result_auc=[]
+    for k, (train_index,test_index) in enumerate(kfd.split(graphs, graphs_label)):
+        graphs_train_ = [graphs[i] for i in train_index]
+        graphs_test = [graphs[i] for i in test_index]
+    
+        graphs_train = []
+        for graph in graphs_train_:
+            if graph.graph['label'] == 1:
+                graphs_train.append(graph)
         
-            dataset_sampler_test = GraphSampler(graphs_test, features=args.feature, normalize=False, max_num_nodes=max_nodes_num)
-            data_test_loader = torch.utils.data.DataLoader(dataset_sampler_test, 
-                                                            shuffle=False,
-                                                            batch_size=1)
-            result = train(data_train_loader, data_test_loader, model_teacher, model_student, args)     
-            result_auc.append(result)
-                
-        result_auc = np.array(result_auc)    
-        auc_avg = np.mean(result_auc)
-        auc_std = np.std(result_auc)
-        print('auroc{}, average: {}, std: {}'.format(result_auc, auc_avg, auc_std))
 
-        mlflow.log_params(vars(args))
-        mlflow.log_metrics({"auc_std": auc_std, "auc_avg": auc_avg})
+        num_train = len(graphs_train)
+        num_test = len(graphs_test)
+        print(num_train, num_test)
+        
+        # TODO What if there are no node features?
+        dataset_sampler_train = GraphSampler(graphs_train, features=args.feature, normalize=False, max_num_nodes=max_nodes_num)
+    
+        model_teacher = GCN_embedding.GcnEncoderGraph_teacher(dataset_sampler_train.feat_dim, args.hidden_dim, args.output_dim, 2,
+                args.num_gc_layers, bn=args.bn, args=args).to(device)
+        for param in model_teacher.parameters():
+            param.requires_grad = False
 
-        mlflow.pytorch.log_model(model_teacher, "teacher_model")
-        mlflow.pytorch.log_model(model_student, "student_model")
+        model_student = GCN_embedding.GcnEncoderGraph_student(dataset_sampler_train.feat_dim, args.hidden_dim, args.output_dim, 2,
+                args.num_gc_layers, bn=args.bn, args=args).to(device)
+        
+        data_train_loader = torch.utils.data.DataLoader(dataset_sampler_train, 
+                                                    shuffle=True,
+                                                    batch_size=args.batch_size)
+    
+        dataset_sampler_test = GraphSampler(graphs_test, features=args.feature, normalize=False, max_num_nodes=max_nodes_num)
+        data_test_loader = torch.utils.data.DataLoader(dataset_sampler_test, 
+                                                        shuffle=False,
+                                                        batch_size=1)
+        result = train(data_train_loader, data_test_loader, model_teacher, model_student, args)     
+        result_auc.append(result)
+            
+    result_auc = np.array(result_auc)    
+    auc_avg = np.mean(result_auc)
+    auc_std = np.std(result_auc)
+    print('auroc{}, average: {}, std: {}'.format(result_auc, auc_avg, auc_std))
 
-        # Log the sklearn model and register as version 1
-        mlflow.pytorch.log_model(
-            pytorch_model=model_teacher,
-            artifact_path="teacher_model",
-            registered_model_name="teacher_model_registered"
-        )
+        # mlflow.log_params(vars(args))
+        # mlflow.log_metrics({"auc_std": auc_std, "auc_avg": auc_avg})
 
-        # Log the sklearn model and register as version 1
-        mlflow.pytorch.log_model(
-            pytorch_model=model_student,
-            artifact_path="model_student",
-            registered_model_name="student_model_registered"
-        )
+        # # Log the sklearn model and register as version 1
+        # mlflow.pytorch.log_model(
+        #     pytorch_model=model_teacher,
+        #     artifact_path="teacher_model_0_"+ DS,
+        #     registered_model_name="teacher_model_registered_0_" + DS
+        # )
+
+        # # Log the sklearn model and register as version 1
+        # mlflow.pytorch.log_model(
+        #     pytorch_model=model_student,
+        #     artifact_path="model_student_0_"+ DS,
+        #     registered_model_name="student_model_registered_0_"+DS
+        # )
+
+    torch.save(model_student.state_dict(), './modelstd/student.pth')
+    torch.save(model_teacher.state_dict(), './modelstd/teacher.pth')
