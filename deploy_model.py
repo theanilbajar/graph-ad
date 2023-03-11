@@ -10,7 +10,10 @@ import random
 import torch.nn.functional as F
 from sklearn.model_selection import StratifiedKFold
 import mlflow
+import networkx as nx
 import streamlit as st
+
+from mapping import get_node_map_for_dataset
 
 def arg_parse():
     parser = argparse.ArgumentParser(description='GLocalKD Arguments.')
@@ -70,21 +73,34 @@ def test(data_test_loader, model_teacher, model_student, args):
         label_test.append(loss_)
     label_test = np.array(label_test)
                             
-    fpr_ab, tpr_ab, _ = roc_curve(y, label_test)
-    st.write('Result in format: (original label, loss)')
-    st.write(tuple(list(zip(y, label_test))))
+    fpr_ab, tpr_ab, _ = roc_curve(y, label_test)       
 
-    if label_test < 0.004:
-        label_test = 0
-    else:
-        label_test = 1
-    
-    if label_test == 1:
+    if st.button("Predict if it's a potential drug"):
         
-        st.write('Anomalous or not a potential drug')
-    else:
-        st.write('A potential drug')
+        # st.write('Result in format: (original label, loss)')
+        
+        import pandas as pd
+        data_res = pd.DataFrame(data=[(y, label_test)], columns=['Label', 'Anomaly Score'])
+        # st.write(tuple(list(zip(y, label_test))))
 
+        anomaly_score = label_test
+        if label_test < 0.004:
+            label_test = 0
+        else:
+            label_test = 1
+        
+        col1, col2, col3 = st.columns(3)
+        col1.metric("Actual Label", y[0])
+        col2.metric("Predicted Label", label_test)
+        col3.metric("Anomaly Score", round(anomaly_score[0], 5))
+
+        if label_test == 1:
+            st.write('### Anomalous or not a potential drug')
+        else:
+            st.write('### A potential drug')
+    else:
+        st.write("Click on predict button to get the results")
+    
     # test_roc_ab = auc(fpr_ab, tpr_ab)   
     # st.write('semi-supervised abnormal detection: auroc_ab: {}'.format(test_roc_ab))
     return auroc_final
@@ -97,96 +113,43 @@ def test(data_test_loader, model_teacher, model_student, args):
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 args = arg_parse()
-DS = f'{args.DS}'
+# DS = f'{args.DS}'
 
-st.write("# Graph Anomaly Detection with Dataset - "+ DS)
-
-print(f'DS: {DS}')
+# print(f'DS: {DS}')
 setup_seed(args.seed)
 
-graphs = load_data.read_graphfile(args.datadir, args.DS, max_nodes=args.max_nodes)  
+dataset_list = ('BZR', 'AIDS', 'DHFR', 'COX2')
+
+dataset_name = st.sidebar.selectbox(
+    "Select Dataset to check?",
+    dataset_list
+)
+DS = dataset_name
+
+st.write("# Graph Anomaly Detection with Dataset - "+ dataset_name)
+
+node_map = get_node_map_for_dataset(dataset=dataset_name)
+
+graphs_v = load_data.read_graphfile_viz('./dataset', dataname=dataset_name, node_map = node_map)
+
+graphs = load_data.read_graphfile(args.datadir, dataname=dataset_name, max_nodes=args.max_nodes)  
 datanum = len(graphs)
 if args.max_nodes == 0:
     max_nodes_num = max([G.number_of_nodes() for G in graphs])
 else:
     max_nodes_num = args.max_nodes
+
+graph_index = st.number_input("Which graph do you want predict?", 0, datanum-1)
+
 st.write(f'### Total graphs: {datanum}')
 
-def get_bzr_node_map():
-    activities = """0	O
-    1	C
-    2	N
-    3	F
-    4	Cl
-    5	S
-    6	Br
-    7	Si
-    8	Na
-    9	I
-    10	Hg
-    11	B
-    12	K
-    13	P
-    14	Au
-    15	Cr
-    16	Sn
-    17	Ca
-    18	Cd
-    19	Zn
-    20	V
-    21	As
-    22	Li
-    23	Cu
-    24	Co
-    25	Ag
-    26	Se
-    27	Pt
-    28	Al
-    29	Bi
-    30	Sb
-    31	Ba
-    32	Fe
-    33	H
-    34	Ti
-    35	Tl
-    36	Sr
-    37	In
-    38	Dy
-    39	Ni
-    40	Be
-    41	Mg
-    42	Nd
-    43	Pd
-    44	Mn
-    45	Zr
-    46	Pb
-    47	Yb
-    48	Mo
-    49	Ge
-    50	Ru
-    51	Eu
-    52	Sc
-    53	Gd"""
-
-    node_map = {i.split('\t')[0].strip() : i.split('\t')[1].strip() for i in activities.split("\n")}
-
-    return node_map
-
-node_map = get_bzr_node_map()
-graphs_v = load_data.read_graphfile_viz('./dataset', dataname='BZR', node_map = node_map)
-
-import networkx as nx
-
-G = graphs_v[28][0].copy()
-labels = graphs_v[28][1].copy()
+G = graphs_v[graph_index][0].copy()
+labels = graphs_v[graph_index][1].copy()
 only_labels = {k: v.split("-")[0] for k, v in labels.items()}
 
 import matplotlib.pyplot as plt
 
 fig, ax = plt.subplots()
-# pos = nx.kamada_kawai_layout(G)
-# nx.draw(G,pos, with_labels=True)
-# st.pyplot(fig)
 
 only_labels = {k: v.split("-")[0] for k, v in labels.items()}
 nx.draw_kamada_kawai(G, labels=only_labels, with_labels = True)
@@ -197,22 +160,8 @@ st.pyplot(fig)
 graphs_label = [graph.graph['label'] for graph in graphs]
 
 # just take one graph
-graphs_label = [graphs[1].graph['label']]
-graphss = [graphs[1]]
-
-# model_name = "student_model_registered"
-# model_version = 1
-
-# model_student = mlflow.pytorch.load_model(
-#     model_uri=f"models:/{model_name}/{model_version}"
-#     )
-
-# model_name_t = "teacher_model_registered"
-# model_version_t = 1
-
-# model_teacher = mlflow.pytorch.load_model(
-#     model_uri=f"models:/{model_name_t}/{model_version_t}"
-# )
+graphs_label = [graphs[graph_index].graph['label']]
+graphss = [graphs[graph_index]]
 
 
 # kfd=StratifiedKFold(n_splits=1, random_state=args.seed, shuffle = True)
