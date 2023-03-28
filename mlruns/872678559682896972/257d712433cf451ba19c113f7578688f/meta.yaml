@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/BITS/Dissertation/Research/graph-ad/mlruns/872678559682896972/257d712433cf451ba19c113f7578688f/artifacts
+end_time: 1680031330767
+entry_point_name: ''
+experiment_id: '872678559682896972'
+lifecycle_stage: active
+run_id: 257d712433cf451ba19c113f7578688f
+run_name: ENZYMES
+run_uuid: 257d712433cf451ba19c113f7578688f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1680031261147
+status: 3
+tags: []
+user_id: root
