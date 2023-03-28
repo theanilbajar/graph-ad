@@ -1,8 +1,9 @@
 artifact_uri: file:///D:/BITS/Dissertation/Research/graph-ad/mlruns/872678559682896972/ba2240ecc857427ca250a122af04042d/artifacts
+deleted_time: 1678543071297
 end_time: 1676717223693
 entry_point_name: ''
 experiment_id: '872678559682896972'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: ba2240ecc857427ca250a122af04042d
 run_name: BZR
 run_uuid: ba2240ecc857427ca250a122af04042d
