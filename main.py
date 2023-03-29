@@ -221,9 +221,9 @@ if __name__ == '__main__':
 
         try:
             import os
-            os.mkdir(f'./modelstd/{DS}')
+            os.mkdir(f'./modelstd/{DS}_sce')
         except Exception as e:
             print('Exception')
 
-        torch.save(model_student.state_dict(), f'./modelstd/{DS}/student.pth')
-        torch.save(model_teacher.state_dict(), f'./modelstd/{DS}/teacher.pth')
+        torch.save(model_student.state_dict(), f'./modelstd/{DS}_sce/student.pth')
+        torch.save(model_teacher.state_dict(), f'./modelstd/{DS}_sce/teacher.pth')

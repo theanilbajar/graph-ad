@@ -12,11 +12,12 @@ from sklearn.model_selection import StratifiedKFold
 import mlflow
 import networkx as nx
 import streamlit as st
+from util import sce_loss
 
 from mapping import get_node_map_for_dataset
 
 def arg_parse():
-    parser = argparse.ArgumentParser(description='GLocalKD Arguments.')
+    parser = argparse.ArgumentParser(description='Arguments.')
     parser.add_argument('--datadir', dest='datadir', default ='dataset', help='Directory where benchmark is located')
     parser.add_argument('--DS', dest='DS', default ='BZR', help='dataset name')
     parser.add_argument('--max-nodes', dest='max_nodes', type=int, default=0, help='Maximum number of nodes (ignore graghs with nodes exceeding the number.')
@@ -55,10 +56,10 @@ def test(data_test_loader, model_teacher, model_student, args):
         # st.write(data.keys())
         embed_node, embed = model_student(h0, adj)
         embed_teacher_node, embed_teacher = model_teacher(h0, adj)
-    #    loss_node = torch.mean(sce_loss(embed_node, embed_teacher_node), dim=-1).mean(dim=-1)
-    #    loss_graph = sce_loss(embed, embed_teacher).mean(dim=-1)
-        loss_node = torch.mean(F.mse_loss(embed_node, embed_teacher_node, reduction='none'), dim=2).mean(dim=1).mean(dim=0)
-        loss_graph = F.mse_loss(embed, embed_teacher, reduction='none').mean(dim=1).mean(dim=0)
+        loss_node = torch.mean(sce_loss(embed_node, embed_teacher_node), dim=-1).mean(dim=-1)
+        loss_graph = sce_loss(embed, embed_teacher).mean(dim=-1)
+        # loss_node = torch.mean(F.mse_loss(embed_node, embed_teacher_node, reduction='none'), dim=2).mean(dim=1).mean(dim=0)
+        # loss_graph = F.mse_loss(embed, embed_teacher, reduction='none').mean(dim=1).mean(dim=0)
         loss_ = loss_graph + loss_node
         loss_ = np.array(loss_.cpu().detach())
         loss.append(loss_)
@@ -189,10 +190,10 @@ for k, (train_index,test_index) in enumerate(zip(graphss, graphs_label)):
                     args.num_gc_layers, bn=args.bn, args=args).to(device)
             
 
-    model_student.load_state_dict(torch.load(f'./modelstd/{DS}student.pth'))
+    model_student.load_state_dict(torch.load(f'./modelstd/{DS}_sce/student.pth'))
     model_student.eval()
 
-    model_teacher.load_state_dict(torch.load(f'./modelstd/{DS}teacher.pth'))
+    model_teacher.load_state_dict(torch.load(f'./modelstd/{DS}_sce/teacher.pth'))
     model_student.eval()
 
     dataset_sampler_test = GraphSampler(graphs_test, features=args.feature, normalize=False, max_num_nodes=max_nodes_num)
