@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/BITS/Dissertation/Research/graph-ad/mlruns/872678559682896972/05631994449d46fea48b4c52f4d983f7/artifacts
+end_time: 1680058221960
+entry_point_name: ''
+experiment_id: '872678559682896972'
+lifecycle_stage: active
+run_id: 05631994449d46fea48b4c52f4d983f7
+run_name: BZR
+run_uuid: 05631994449d46fea48b4c52f4d983f7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1680058181240
+status: 3
+tags: []
+user_id: root
