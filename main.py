@@ -56,6 +56,11 @@ def setup_seed(seed):
      random.seed(seed)
      torch.backends.cudnn.deterministic = True
 
+# train
+    # optimizer
+    # scheduler
+    # model train, loss calculation, model testing, model auc-roc
+
 def train(dataset, data_test_loader, model_teacher, model_student, args):    
     optimizer = torch.optim.Adam(filter(lambda p : p.requires_grad, model_student.parameters()), lr=0.0001)
     scheduler=torch.optim.lr_scheduler.StepLR(optimizer,step_size=50, gamma=0.5)
@@ -76,11 +81,11 @@ def train(dataset, data_test_loader, model_teacher, model_student, args):
             embed_teacher_node, embed_teacher = model_teacher(h0, adj)
             embed_teacher =  embed_teacher.detach()
             embed_teacher_node = embed_teacher_node.detach()
-            # loss_node = torch.mean(sce_loss(embed_node, embed_teacher_node), dim=-1).mean(dim=-1).mean(dim=-1)
-            # loss = sce_loss(embed, embed_teacher).mean(dim=-1).mean(dim=-1)
+            loss_node = torch.mean(sce_loss(embed_node, embed_teacher_node), dim=-1).mean(dim=-1).mean(dim=-1)
+            loss = sce_loss(embed, embed_teacher).mean(dim=-1).mean(dim=-1)
 
-            loss_node = torch.mean(F.mse_loss(embed_node, embed_teacher_node, reduction='none'), dim=2).mean(dim=1).mean(dim=0)
-            loss = F.mse_loss(embed, embed_teacher, reduction='none').mean(dim=1).mean(dim=0)
+            # loss_node = torch.mean(F.mse_loss(embed_node, embed_teacher_node, reduction='none'), dim=2).mean(dim=1).mean(dim=0)
+            # loss = F.mse_loss(embed, embed_teacher, reduction='none').mean(dim=1).mean(dim=0)
             loss = loss + loss_node
             
             loss.backward(loss.clone().detach())
@@ -101,13 +106,13 @@ def train(dataset, data_test_loader, model_teacher, model_student, args):
             for batch_idx, data in enumerate(data_test_loader):
                adj = Variable(data['adj'].float(), requires_grad=False).to(device)
                h0 = Variable(data['feats'].float(), requires_grad=False).to(device)
-                        
+
                embed_node, embed = model_student(h0, adj)
                embed_teacher_node, embed_teacher = model_teacher(h0, adj)
-            #    loss_node = torch.mean(sce_loss(embed_node, embed_teacher_node), dim=-1).mean(dim=-1)
-            #    loss_graph = sce_loss(embed, embed_teacher).mean(dim=-1)
-               loss_node = torch.mean(F.mse_loss(embed_node, embed_teacher_node, reduction='none'), dim=2).mean(dim=1).mean(dim=0)
-               loss_graph = F.mse_loss(embed, embed_teacher, reduction='none').mean(dim=1).mean(dim=0)
+               loss_node = torch.mean(sce_loss(embed_node, embed_teacher_node), dim=-1).mean(dim=-1)
+               loss_graph = sce_loss(embed, embed_teacher).mean(dim=-1)
+            #    loss_node = torch.mean(F.mse_loss(embed_node, embed_teacher_node, reduction='none'), dim=2).mean(dim=1).mean(dim=0)
+            #    loss_graph = F.mse_loss(embed, embed_teacher, reduction='none').mean(dim=1).mean(dim=0)
                loss_ = loss_graph + loss_node
                loss_ = np.array(loss_.cpu().detach())
                loss.append(loss_)
@@ -132,8 +137,8 @@ def train(dataset, data_test_loader, model_teacher, model_student, args):
     
 if __name__ == '__main__':
 
-    mlflow.set_experiment("glocalkd")
-    experiment = mlflow.get_experiment_by_name("glocalkd")
+    mlflow.set_experiment("GraphAD")
+    experiment = mlflow.get_experiment_by_name("GraphAD")
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     
@@ -162,7 +167,7 @@ if __name__ == '__main__':
         
             graphs_train = []
             for graph in graphs_train_:
-                if graph.graph['label'] != 0:
+                if graph.graph['label'] == 1:
                     graphs_train.append(graph)
             
 
@@ -177,7 +182,7 @@ if __name__ == '__main__':
                     args.num_gc_layers, bn=args.bn, args=args).to(device)
             for param in model_teacher.parameters():
                 param.requires_grad = False
-    
+
             model_student = GCN_embedding.GcnEncoderGraph_student(dataset_sampler_train.feat_dim, args.hidden_dim, args.output_dim, 2,
                     args.num_gc_layers, bn=args.bn, args=args).to(device)
             
@@ -200,19 +205,25 @@ if __name__ == '__main__':
         mlflow.log_params(vars(args))
         mlflow.log_metrics({"auc_std": auc_std, "auc_avg": auc_avg})
 
-        mlflow.pytorch.log_model(model_teacher, "teacher_model")
-        mlflow.pytorch.log_model(model_student, "student_model")
+        #     # # Log the sklearn model and register as version 1
+        # mlflow.pytorch.log_model(
+        #     pytorch_model=model_teacher,
+        #     artifact_path="teacher_model_0_"+ DS,
+        #     registered_model_name="teacher_model_registered_0_" + DS
+        # )
 
-        # Log the sklearn model and register as version 1
-        mlflow.pytorch.log_model(
-            pytorch_model=model_teacher,
-            artifact_path="teacher_model",
-            registered_model_name="teacher_model_registered"
-        )
+        # # # Log the sklearn model and register as version 1
+        # mlflow.pytorch.log_model(
+        #     pytorch_model=model_student,
+        #     artifact_path="model_student_0_"+ DS,
+        #     registered_model_name="student_model_registered_0_"+DS
+        # )
 
-        # Log the sklearn model and register as version 1
-        mlflow.pytorch.log_model(
-            pytorch_model=model_student,
-            artifact_path="model_student",
-            registered_model_name="student_model_registered"
-        )
+        try:
+            import os
+            os.mkdir(f'./modelstd/{DS}_sce')
+        except Exception as e:
+            print('Exception')
+
+        torch.save(model_student.state_dict(), f'./modelstd/{DS}_sce/student.pth')
+        torch.save(model_teacher.state_dict(), f'./modelstd/{DS}_sce/teacher.pth')

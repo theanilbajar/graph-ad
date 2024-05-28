@@ -37,7 +37,6 @@ scikit-learn
 scipy
 seaborn
 six
-sklearn
 smart-open
 srsly
 thinc

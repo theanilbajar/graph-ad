@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/BITS/Dissertation/Research/graph-ad/mlruns/0/b31e554f897e4cd08ed48d60b0910558/artifacts
+end_time: 1678543008649
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: b31e554f897e4cd08ed48d60b0910558
+run_name: chill-owl-867
+run_uuid: b31e554f897e4cd08ed48d60b0910558
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1678542999208
+status: 3
+tags: []
+user_id: anil

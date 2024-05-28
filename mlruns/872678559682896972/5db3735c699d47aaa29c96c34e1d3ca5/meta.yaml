@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/BITS/Dissertation/Research/graph-ad/mlruns/872678559682896972/5db3735c699d47aaa29c96c34e1d3ca5/artifacts
+end_time: 1680058659889
+entry_point_name: ''
+experiment_id: '872678559682896972'
+lifecycle_stage: active
+run_id: 5db3735c699d47aaa29c96c34e1d3ca5
+run_name: IMDB-BINARY
+run_uuid: 5db3735c699d47aaa29c96c34e1d3ca5
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1680058463568
+status: 3
+tags: []
+user_id: root

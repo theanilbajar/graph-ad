@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/BITS/Dissertation/Research/graph-ad/mlruns/872678559682896972/7f3bcedcbb2649ecb4080aa2a5c5e068/artifacts
+end_time: 1680058389014
+entry_point_name: ''
+experiment_id: '872678559682896972'
+lifecycle_stage: active
+run_id: 7f3bcedcbb2649ecb4080aa2a5c5e068
+run_name: DHFR
+run_uuid: 7f3bcedcbb2649ecb4080aa2a5c5e068
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1680058300091
+status: 3
+tags: []
+user_id: root

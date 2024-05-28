@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/BITS/Dissertation/Research/graph-ad/mlruns/872678559682896972/e13b7a15990740e6b08709001b4b4b39/artifacts
+end_time: 1680031109942
+entry_point_name: ''
+experiment_id: '872678559682896972'
+lifecycle_stage: active
+run_id: e13b7a15990740e6b08709001b4b4b39
+run_name: AIDS
+run_uuid: e13b7a15990740e6b08709001b4b4b39
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1680030725431
+status: 3
+tags: []
+user_id: root
